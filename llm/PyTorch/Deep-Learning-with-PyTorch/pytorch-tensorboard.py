@@ -23,6 +23,7 @@ def matplotlib_imshow(img, one_channel=False):
         plt.imshow(npimg, cmap="Greys")
     else:
         plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
     
 
 class Net(nn.Module):
@@ -71,13 +72,24 @@ def plot_classes_preds(net, images, labels):
     fig = plt.figure(figsize=(12, 48))
     for idx in np.arange(4):
         ax = fig.add_subplot(1, 4, idx+1, xticks=[], yticks=[])
-        matplotlib_imshow(images[idx], one_channel=True)
+        # matplotlib_imshow(images[idx], one_channel=True)
         ax.set_title("{0}, {1:.1f}%\n(label: {2})".format(
             classes[preds[idx]],
             probs[idx] * 100.0,
             classes[labels[idx]]),
                     color=("green" if preds[idx]==labels[idx].item() else "red"))
     return fig
+
+# helper function
+def select_n_random(data, labels, n=100):
+    '''
+    Selects n random datapoints and their corresponding labels from a dataset
+    '''
+    assert len(data) == len(labels)
+
+    perm = torch.randperm(len(data))
+    return data[perm][:n], labels[perm][:n]
+
 
 if __name__ == '__main__':
     # transforms
@@ -127,7 +139,21 @@ if __name__ == '__main__':
     # write to tensorboard
     writer.add_image('four_fashion_mnist_images', img_grid)
     writer.add_graph(net, images)
+
+    # select random images and their target indices
+    images, labels = select_n_random(trainset.data, trainset.targets)
+
+    # get the class labels for each image
+    class_labels = [classes[lab] for lab in labels]
+
+    # log embeddings
+    features = images.view(-1, 28 * 28)
+    writer.add_embedding(features,
+                        metadata=class_labels,
+                        label_img=images.unsqueeze(1))
     writer.close()
+
+
 
     running_loss = 0.0
     for epoch in range(1):  # loop over the dataset multiple times
