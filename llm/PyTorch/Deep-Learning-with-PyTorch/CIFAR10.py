@@ -55,7 +55,7 @@ if __name__ == '__main__':
     
     print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
 
-    # imshow(torchvision.utils.make_grid(images))
+    imshow(torchvision.utils.make_grid(images))
 
     net = Net()
 
