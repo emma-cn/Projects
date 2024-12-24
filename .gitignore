@@ -2,3 +2,4 @@
 .venv
 Python/PyTorch/data/*
 llm/data/*
+llm/PyTorch/Deep-Learning-with-PyTorch/data/*
