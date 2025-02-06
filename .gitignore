@@ -4,3 +4,8 @@ Python/PyTorch/data/*
 llm/data/*
 llm/PyTorch/Deep-Learning-with-PyTorch/data/*
 llm/runs/fashion_mnist_experiment_1/*
+llm/auto_refresh/logs/*
+llm/auto_refresh/page_source.html
+llm/auto_refresh/归档.zip
+llm/auto_refresh_副本/归档.zip
+llm/auto_refresh_副本/page_source.html
